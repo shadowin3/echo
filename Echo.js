@@ -284,5 +284,5 @@ initializeData((err) => {
     if (err) {
         return console.log(err);
     }
-    bot.login("MzEzMDM2OTk0OTMyMzc1NTUy.C_lNRA.ItalXLeUUJ39kNE4Hdhl5DInfYs");
+    bot.login();
 });
