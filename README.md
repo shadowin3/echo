@@ -14,7 +14,7 @@
 | Commands        | description |
 | ------------- |:-------------:|
 | -yt [search_term]| Searches youtube for text that the user passes, then gives back a link to one of the videos. |
-| -@Echo#2584 [question] |  This will reach out to the cleverbot API and return an Answer. |
+| @Echo#2584 [question] |  This will reach out to the cleverbot API and return an Answer. |
 | -roll |  This rolls from 0-100, and returns the users name and the roll value. |
 | -coin, -cf | Simple coin toss command, gives you a 50/50 chance. |
 | -8ball [question], -8b [question] | This returns the eightball prediction and the question the user asked. |
@@ -29,6 +29,8 @@
 | -loan | Gives the user, a little cash, Max amount of $50 bucks. |
 | -bank | Shows the user how much money they have. |
 | -leaderboard | Shows the Top five users with the most money. |
+| -say [text] | Repeats the text |
+| -cmd [command] [target_user] | Directs a single-word action towards a subject. Ex: -cmd poke @Shadow = Echo: *pokes* @Shadow
 | -help, -h, -??? | Returns the github page with Help information and commands. |
 
 ## Updates:
