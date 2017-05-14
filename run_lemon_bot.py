@@ -287,6 +287,8 @@ def eight_ball(message):
 @client.event
 def on_message(message):
     author = message.author
+    if message.content.startswith('-link'):
+      await client.send_message(message.channel,'https://wwww.discord.me/shade')
     if message.content.startswith('-yt'):
         youtube_search(message)
     if message.content.startswith('-roll'):
