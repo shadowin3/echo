@@ -30,7 +30,12 @@
 | -bank | Shows the user how much money they have. |
 | -leaderboard | Shows the Top five users with the most money. |
 | -say [text] | Repeats the text |
-| -cmd [command] [target_user] | Directs a single-word action towards a subject. Ex: -cmd poke @Shadow = Echo: *pokes* @Shadow
+| -cmd [command] [target_user] | Directs a single-word action towards a subject. Ex: -cmd poke @Shadow = Echo: *pokes* @Shadow |
+| -pick [thing1] [thing2] | Picks randomly between 2 different things. |
+| /notwork | Displays an image that says, "That's not how that works, you little shit." |
+| /sadpotato | Shows a funny picture to cheer someone up. | 
+| /lewd | Links an image to chat for when someone is being lewd. | 
+| /cookie [person] [reason] | Gives someone a cookie. Ex: /cookie @Shadow for being awesome = Echo: "@Shadow, you got a :cookie: from (author) ... Reason: for being awesome ... Enjoy this shadowcookie"
 | -help, -h, -??? | Returns the github page with Help information and commands. |
 
 ## Updates:
