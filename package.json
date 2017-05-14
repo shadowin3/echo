@@ -1,0 +1,27 @@
+{
+  "name": "svbot",
+  "version": "1.0.0",
+  "description": "Multipurpose bot for Shadowverse Discord.",
+  "main": "svbot.js",
+  "dependencies": {
+    "discord.js": "^10.0.1",
+    "moment": "^2.17.1",
+    "mongoose": "^4.7.7",
+    "request": "^2.78.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node svbot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElDynamite/SV-Discord-Bot.git"
+  },
+  "author": "Nikit Nainwal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElDynamite/SV-Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/ElDynamite/SV-Discord-Bot#readme"
+}
