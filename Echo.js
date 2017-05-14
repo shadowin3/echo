@@ -111,7 +111,7 @@ bot.on("guildMemberAdd", (member) => {
 
 bot.on("disconnect", () => {
     log.log("Bot disconnected!");
-    bot.login("MzEzMDM2OTk0OTMyMzc1NTUy.C_lNRA.ItalXLeUUJ39kNE4Hdhl5DInfYs");
+    bot.login();
 });
 
 //MESSAGE HANDLING
