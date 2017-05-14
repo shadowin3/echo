@@ -344,7 +344,7 @@ def on_message(message):
         loan_money(author, message)
     if message.content.startswith('-bank'):
         bank_lookup(author, message)
-    if message.content.startswith('-leader'):
+    if message.content.startswith('-leaderboard'):
         leader_lookup(author, message)
     if message.content.startswith('/notwork'):
       await client.send_file(message.channel,"notwork.jpg")
