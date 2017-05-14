@@ -1,4 +1,4 @@
-# Echo Bot ![alt text]
+# Echo Bot
 
 ## Features:
    * Youtube Integration
