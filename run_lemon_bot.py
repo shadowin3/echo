@@ -1,31 +1,3 @@
-#!/usr/bin/python
-# This is a Text based discord Bot that will interface with users via commands
-# given from the text channels in discord.
-
-# ################### Copyright (c) 2016 RamCommunity #################
-# Permission is hereby granted, free of charge, to any person obtaining a copy of
-# this software and associated documentation files (the "Software"), to deal in
-# the Software without restriction, including without limitation the rights to
-# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-# of the Software, and to permit persons to whom the Software is furnished to do so
-
-
-# TODO LIST
-#########################################
-# google search
-# wiki search
-# Limiter for the Slots, so you cant spam them. Maybe your arm is Tired wait a
-# little bit. ?
-# Zork Adventure game, in a channel of its own.
-# TODO -- EASY MODE - Norm the messages so users can send any caps.
-
-#########################################
-# Casino - Idea
-
-# !blackjack -- author has X and X for a total of X, Commands !stand, !hit,
-# and !doubledown.
-#########################################
-
 import os
 import time
 import json
@@ -66,7 +38,7 @@ API_KEY = ''
 # Function to search for a youtube video and return a link.
 def youtube_search(message):
     link_list = []
-    text_to_search = message.content.replace('!youtube', '')
+    text_to_search = message.content.replace('-yt', '')
     print 'Searching YouTube for: %s' % text_to_search
     query = urllib2.quote(text_to_search)
     url = "https://www.youtube.com/results?search_query=" + query
@@ -126,13 +98,13 @@ def play_slots(author, message):
     if bet_dict.get(str(author)):
         set_bet = bet_dict.get(str(author))
     else:
-        client.send_message(message.channel, 'You need to set a bet with the !bet command, Example: !bet 10')
+        client.send_message(message.channel, 'You need to set a bet with the -bet command, Example: -bet 10')
         return
     bank_dict = build_dict(BANK_PATH)
     if bank_dict.get(str(author)):
         balance = bank_dict.get(str(author))
     else:
-        client.send_message(message.channel, 'You need to run the !loan command.')
+        client.send_message(message.channel, 'You need to run the -loan command.')
         return
     if set_bet > balance:
         client.send_message(message.channel, 'Your balance of $%s is to low, lower your bet amount of $%s' % (balance, set_bet))
@@ -179,7 +151,7 @@ def play_slots(author, message):
         bank_dict[str(author)] = result
     save_obj(bank_dict, BANK_PATH)
 
-
+    
 # Function to set a users bet.
 def set_bet(author, message):
     amount = message.content.replace('!bet ', '')
@@ -197,6 +169,7 @@ def set_bet(author, message):
     data_dict[str(author)] = amount
     save_obj(data_dict, BET_PATH)
 
+    
 # Function to look at the currently Set bet.
 def review_bet(author, message):
     bet_dict = build_dict(BET_PATH)
@@ -205,8 +178,7 @@ def review_bet(author, message):
     else:
         client.send_message(message.channel, '%s your bet is not Set, use the !bet command.' % (author))
 
-
-
+        
 # function to loan players money -- ONLY UP TO -- > $50 dollars
 def loan_money(author, message):
     bank_dict = build_dict(BANK_PATH)
@@ -253,7 +225,7 @@ def leader_lookup(author, message):
 # Function to get the weather by zip code. using: http://openweathermap.org
 # you can get an API key on the web site.
 def get_weather(message):
-    zip_code = message.content.replace('!weather', '')
+    zip_code = message.content.replace('-weather', '')
     link = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s' % (zip_code, API_KEY)
     r = requests.get(link)
     data = json.loads(r.text)
@@ -266,23 +238,23 @@ def get_weather(message):
 
 # function to make the bot join a server.
 def bot_join(message):
-    join_url = message.content.strip('!join ')
+    join_url = message.content.strip('-join ')
     client.accept_invite(join_url)
     client.send_message(message.channel, 'Joining the Server! ^_^')
 
 
-# Ask clever bot a question.
+# Ask Echo a question.
 def ask_clever_bot(message):
-    question = message.content.replace('!cleverbot', '')
+    question = message.content.replace('@Echo#2584', '')
     cb1 = cleverbot.Cleverbot()
     answer = cb1.ask(question)
     client.send_message(message.channel, answer)
 
 
-# this Spanks the user and calls them out on the server, with an '@' message.
-# Format ==> @User has been, INSERT_ITEM_HERE
+# Spanks the user and calls them out on the server, with an '@' message.
+-# Format ==> @User has been, INSERT_ITEM_HERE
 def spank_user(message, author):
-    target_user = message.content.replace('!spank ', '')
+    target_user = message.content.replace('-spank ', '')
     punishment = SPANK_BANK[random.randint(0, len(SPANK_BANK) - 1)]
     client.send_message(message.channel, "%s has been, %s by %s" % (target_user, punishment, author))
 
@@ -298,17 +270,6 @@ def coin_toss(message):
     time.sleep(.5)
     client.send_message(message.channel, "The coin Shows, %s" % outcome)
 
-
-# function to call the BDO script and relay odds on enchanting.
-def bdo_enchant(message):
-    try:
-        raw_data = message.content.strip('!enchant ').split(' ')
-        enchanting_results = en.run_the_odds(raw_data[0], raw_data[1])
-        client.send_message(message.channel, enchanting_results)
-    except Exception:
-        client.send_message(message.channel, 'Use the Format --> !enchant target_level fail_stacks')
-
-
 # Rolling the odds for a user.
 def roll_odds(author, message):
     rand_roll = random.randint(0, 100)
@@ -317,7 +278,7 @@ def roll_odds(author, message):
 
 # eight ball function to return the magic of the eight ball.
 def eight_ball(message):
-    question = message.content.strip('!8ball')
+    question = message.content.strip('-8ball' or '-8b')
     prediction = random.randint(0, len(EIGHT_BALL_OPTIONS) - 1)
     client.send_message(message.channel, 'Question: [%s], %s' % (question, EIGHT_BALL_OPTIONS[prediction]))
 
@@ -326,43 +287,74 @@ def eight_ball(message):
 @client.event
 def on_message(message):
     author = message.author
-    if message.content.startswith('!enchant'):
-        bdo_enchant(message)
-    if message.content.startswith('!youtube'):
+    if message.content.startswith('-yt'):
         youtube_search(message)
-    if message.content.startswith('!roll'):
+    if message.content.startswith('-roll'):
         roll_odds(author, message)
-    if message.content.startswith('!8ball'):
+    if message.content.startswith('-8ball' or '-8b'):
         eight_ball(message)
-    if message.content.startswith('!join'):
-        bot_join(message)
-    if message.content.startswith('!weather'):
+    if message.content.startswith('-join'):        
+      bot_join(message)
+    if message.content.startswith('-weather'):
         get_weather(message)
-    if message.content.startswith('!cleverbot'):
+    if message.content.startswith('<@313036994932375552>'):
         ask_clever_bot(message)
-    if message.content.startswith('!spank'):
+    if message.content.startswith('-say'):
+      inputa = message.content.split(None,1)
+      await client.send_message(message.channel,inputa[1])
+    if message.content.startswith('-spank'):
         spank_user(message, author)
-    if message.content.startswith('!coin'):
+    if message.content.startswith('-cmd'):
+      inputo = message.content.split(None,2)
+        action = ("*"+inputo[1]+"s"+"*"+" ")
+        if inputo[1].startswith("kiss"):
+          await client.send_message(message.channel,"*kisses* "+inputo[2])
+        if inputo[1].startswith("marry"):
+          await client.send_message(message.channel,"*marries* "+inputo[2])
+        if inputo[1].startswith("carry"):
+          await client.send_message(message.channel,"*carries* "+inputo[2])
+        if inputo[1].startswith("punch"):
+          await client.send_message(message.channel,"*punches* "+inputo[2])
+        if inputo[1].startswith("defy"):
+          await client.send_message(message.channel,"*defies* "+inputo[2])
+        if inputo[1].startswith("disqualify"):
+          await client.send_message(message.channel,"*disqualifies* "+inputo[2])
+        if not input[1].startswith("carry","marry","kiss","punch","defy"):
+          await client.send_message(message.channel,action+input[2])
+    if message.content.startswith('-coin' or 'cf'):
         coin_toss(message)
-    if message.content.startswith('!help'):
-        client.send_message(message.channel, 'https://github.com/lemon65/discord_bot#commands')
-    if message.content.startswith('!slots'):
+    if message.content.startswith('-pick'):
+        decision = message.content.split(None)
+          del decision[0]
+        prediction = random.randint(0,len(decision) - 1)
+        await client.send_message(message.channel,decision[prediction])
+    if message.content.startswith('-help' or '-h' or '-???'):
+        client.send_message(message.channel, 'https://github.com/shadowin3/echo')
+    if message.content.startswith('-slots'):
         play_slots(author, message)
-    if message.content.startswith('!clear'):
+    if message.content.startswith('-clear'):
         clear_chat_channel(message)
-    if message.content.startswith('!bet'):
+    if message.content.startswith('-bet'):
         set_bet(author, message)
-    if message.content.startswith('!reviewbet'):
+    if message.content.startswith('-rbet'):
         review_bet(author, message)
-    if message.content.startswith('!loan'):
+    if message.content.startswith('-loan'):
         loan_money(author, message)
-    if message.content.startswith('!bank'):
+    if message.content.startswith('-bank'):
         bank_lookup(author, message)
-    if message.content.startswith('!leader'):
+    if message.content.startswith('-leader'):
         leader_lookup(author, message)
+    if message.content.startswith('/notwork'):
+      await client.send_file(message.channel,"notwork.jpg")
+    if message.content.startswith('/sadpotato'):
+      await client.send_file(message.channel,"downpotato.jpg")
+    if message.content.startswith('/lewd'):
+      await client.send_file(message.channel,"Lewd.png")
+    if message.content.startswith('/cookie'):
+      inpu = message.content.split(None,2)
+      await client.send_message(message.channel,inpu[1] + ", you got a :cookie: from "+message.author.name+"\n\n **Reason:** "+inpu[2]+"\n ***Enjoy this Shadowcookie***")
 
-
-
+      
 # Create the local Dirs if needed.
 file_bool = os.path.exists("./bot_files")
 if not file_bool:
