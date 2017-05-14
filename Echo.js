@@ -1,6 +1,3 @@
-/**
- * Created by Doge on 12/13/2016.
- */
 var Discord = require("discord.js");
 var fs = require("fs");
 var request = require("request");
@@ -9,11 +6,9 @@ var display = require('./modules/displayFunc');
 var mongo = require('./modules/mongo');
 var log = require('./modules/logging');
 
-var bot = new Discord.Client();
-
-var loginToken = process.env.SV_DISCORD_TOKEN;
-var blacklist = process.env.DISC_BLACKLIST.split(";");
-var prefix = "!";
+const bot = new Discord.Client();
+var blacklist =[]
+var prefix = "-";
 var messgQ = {};
 var botUserQ = {};
 const Q_SIZE = 50;
@@ -51,7 +46,7 @@ bot.on("message", msg => {
                 linkToReddit(msg);
             } else if (["discord", "do"].indexOf(command) > -1) {
                 linkToDiscord(msg);
-            } else if (["stream", "streams", "twitch", "strim"].indexOf(command) > -1) {
+            } else if (["stream", "streams", "twitch", "strim", "stram"].indexOf(command) > -1) {
                 linkToTwitch(msg);
             } else if (["tournament", "tournaments", "tourney", "tourneys", "battlefy"].indexOf(command) > -1) {
                 linkToBattlefy(msg);
@@ -59,8 +54,6 @@ bot.on("message", msg => {
                 linkToSteam(msg);
             } else if (memeDict.hasOwnProperty(command)) {
                 meme(memeDict[command], msg);
-            } else if (["help", "man"].indexOf(command) > -1) {
-                helpCommand(msg);
             } else if (msg.member && msg.member.permissions.hasPermission("MANAGE_MESSAGES")) {
                 if (command == "clean") {
                     cleanChannel(msg, msg.channel);
@@ -95,8 +88,6 @@ bot.on('ready', () => {
             x.leave();
         }
     });
-    bot.user.setAvatar('icons/gobu.jpg');
-    bot.user.setGame("Shadowverse");
 });
 bot.on("guildCreate", (guild) => {
     log.log("Joined " +  guild.name + " " + guild.id);
@@ -107,20 +98,20 @@ bot.on("guildCreate", (guild) => {
         guild.fetchMember(bot.user).then(botmember => {
             botUserQ[guild.id] = botmember;
         });
-        sendMessage(guild.defaultChannel, "Shadowverse Bot has successfully joined the server gobu!", true);
+        sendMessage(guild.defaultChannel, "Echo has successfully joined the server!", true);
     }
 });
 bot.on("guildMemberAdd", (member) => {
     mongo.getWelcomeToggle(member.guild.id, function (toggle) {
         if (toggle) {
-            sendMessage(member.guild.defaultChannel, `Welcome gobu, ${member.user.username}!`);
+            sendMessage(member.guild.defaultChannel, `Welcome, ${member.user.username}! You have now joined the Shade Empire as a little shade. How cute!`);
         }
     });
 });
 
 bot.on("disconnect", () => {
     log.log("Bot disconnected!");
-    bot.login(loginToken);
+    bot.login("MzEzMDM2OTk0OTMyMzc1NTUy.C_lNRA.ItalXLeUUJ39kNE4Hdhl5DInfYs");
 });
 
 //MESSAGE HANDLING
@@ -169,18 +160,18 @@ function cleanChannel(msg, channel) {
     }
     sendMessage(
         channel,
-        "Cleaned messages gobu."
+        "Cleaned messages, little shade."
     );
 }
 
 function showToggled(msg, success, isToggle) {
     if (!success) {
-        sendMessage(msg.channel, "Couldn't set welcome toggle gobu!");
+        sendMessage(msg.channel, "Couldn't set welcome toggle, little shade!");
     } else {
         if (isToggle) {
-            sendMessage(msg.channel, "Set welcome toggle to ON gobu.");
+            sendMessage(msg.channel, "Set welcome toggle to ON, little shade.");
         } else {
-            sendMessage(msg.channel, "Set welcome toggle to OFF gobu.");
+            sendMessage(msg.channel, "Set welcome toggle to OFF, little shade.");
         }
     }
 }
@@ -220,7 +211,7 @@ function outputCards(msg, cardNames, isEvo, displayFunc) {
     } else if (cardNames.length > 1 && cardNames.length <= 32) {
         sendMessage(
             msg.channel,
-            "I found these cards gobu: " +
+            "I found these cards, little shade: " +
             cardNames.map(function (cardName) {
                 return cards.cardData[cardName].name;
             }).join(", ")
@@ -228,50 +219,17 @@ function outputCards(msg, cardNames, isEvo, displayFunc) {
     } else if (cardNames.length > 32) {
         sendMessage(
             msg.channel,
-            "I found " + cardNames.length + " cards. That's too many gobu!"
+            "I found " + cardNames.length + " cards. That's too many, little shade!"
         );
     } else {
         sendMessage(
             msg.channel,
-            "I can't find that card gobu."
+            "I can't find that card, little shade."
         );
     }
 }
 
 //LINK COMMANDS
-
-function helpCommand(msg) {
-    msg.author.sendMessage(
-        "__!name__ _name_\n" +
-        "Finds card(s) with the given name\n" +
-        "\tAlternate forms: !card-name\n" +
-        "__!card__ _term1 term2_...\n" +
-        "Finds card(s) that match the given terms\n" +
-        "\tAlternate forms: !search, !card-search, !\n" +
-        "__!flair__ _term1 term2_...\n" +
-        "Shows card flair text for the card that matches the terms\n" +
-        "__!img__ _term1 term2_...\n" +
-        "Shows the card image for the card that matches the terms\n" +
-        "\tEvolved search: !evoimg, !imgevo, !evo\n" +
-        "\tAlternate image search: !alt, !altimg, !imgalt\n" +
-        "\tAlternate evolved image search: !evoalt, !altevo, !altevoimg\n" +
-        "__!voice__ _lang type term1 term2_...\n" +
-        "Gets a link from usamin.love for a card's voice.\n" +
-        "\tProvide E or J for language, and SUMMON, ATTACK, EVOLVE, DEATH, EFFECT, or ALL for type.\n" +
-        "__!fullart__ _term 1 term2_...\n" +
-        "Links to the full card art and information for the card that matches the terms\n" +
-        "__!deckcode__ _deck code_\n" +
-        "Get a deckbuilder link with the deck code\n" +
-        "__!reddit__, __!discord__, __!twitch__, __!tourneys__\n" +
-        "Returns relevant links to other Shadowverse resources\n\n" +
-        "__!clean__\n" +
-        `Deletes the last ${Q_SIZE} messages by this bot. Requires mod permissions.\n` +
-        "__!welcome__\n" +
-        `Toggles the welcome message. Add TRUE/FALSE to explicitly toggle. Requires mod permissions.\n` +
-        "\nPlease report any issues to ElDynamite#4773"
-    );
-    sendMessage(msg.channel, `${msg.author.username}, I've sent you a list of commands via PM gobu.`);
-}
 
 function linkToDeckCode(msg, code) {
     sendMessage(msg.channel, `Deck for code ${code}: http://sv.bagoum.com/portal/${code}`)
@@ -326,5 +284,5 @@ initializeData((err) => {
     if (err) {
         return console.log(err);
     }
-    bot.login(loginToken);
+    bot.login("MzEzMDM2OTk0OTMyMzc1NTUy.C_lNRA.ItalXLeUUJ39kNE4Hdhl5DInfYs");
 });

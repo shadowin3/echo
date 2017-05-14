@@ -3,11 +3,10 @@ import time
 import json
 import discord
 import random
-import urllib2
+from urllib.request import urlopen
 import requests
 import pickle
-import cleverbot
-import enchanting_chances as en
+import cleverwrap
 from bs4 import BeautifulSoup
 
 # Disables the SSL warning, that is printed to the console.
@@ -19,9 +18,9 @@ BET_PATH = './bot_files/lemon_bot_bets.pkl'
 ACC_PATH = './bot_files/lemon_bot_accnum.pkl'
 
 EIGHT_BALL_OPTIONS = ["It is certain", "It is decidedly so", "Without a doubt",
-                      "Yes definitely", "You may rely on it", "As I see it yes",
+                      "Yes, definitely", "You can count on it", "As I see it, yes",
                       "Most likely", "Outlook good", "Yes",
-                      "Signs point to yes", "Reply hazy try again",
+                      "Signs point to yes", "Reply hazy; try again",
                       "Ask again later", "Better not tell you now",
                       "Cannot predict now", "Concentrate and ask again",
                       "Don't count on it", "My reply is no",
@@ -33,13 +32,12 @@ SPANK_BANK = ['spanked', 'clobbered', 'paddled', 'whipped', 'punished',
 
 SLOT_PATTERN = [':four_leaf_clover:', ':"moneybag":', ':cherries:', ':lemon:', ':grapes:', ':poop:']
 
-API_KEY = ''
 
 # Function to search for a youtube video and return a link.
 def youtube_search(message):
     link_list = []
     text_to_search = message.content.replace('-yt', '')
-    print 'Searching YouTube for: %s' % text_to_search
+    print('Searching YouTube for: %s' % text_to_search)
     query = urllib2.quote(text_to_search)
     url = "https://www.youtube.com/results?search_query=" + query
     response = urllib2.urlopen(url)
@@ -60,7 +58,7 @@ def clear_chat_channel(message):
         if message_step.channel == target_channel:
             client.delete_message(message_step)
             counter += 1
-    client.send_message(message.channel, 'I have removed %s old messages' % counter)
+    client.send_message(message.channel, 'I have removed %s old messages, little shade' % counter)
 
 
 # Save the dict Object
@@ -98,16 +96,16 @@ def play_slots(author, message):
     if bet_dict.get(str(author)):
         set_bet = bet_dict.get(str(author))
     else:
-        client.send_message(message.channel, 'You need to set a bet with the -bet command, Example: -bet 10')
+        client.send_message(message.channel, 'Little shade, you need to set a bet with the -bet command, Example: -bet 10')
         return
     bank_dict = build_dict(BANK_PATH)
     if bank_dict.get(str(author)):
         balance = bank_dict.get(str(author))
     else:
-        client.send_message(message.channel, 'You need to run the -loan command.')
+        client.send_message(message.channel, 'You need to run the -loan command, little shade.')
         return
     if set_bet > balance:
-        client.send_message(message.channel, 'Your balance of $%s is to low, lower your bet amount of $%s' % (balance, set_bet))
+        client.send_message(message.channel, 'Little shade, your balance of $%s is too low; lower your bet amount of $%s' % (balance, set_bet))
         return
     while count <= 4:
         wheel_pick = SLOT_PATTERN[random.randint(0, len(SLOT_PATTERN) - 1)]
@@ -151,14 +149,14 @@ def play_slots(author, message):
         bank_dict[str(author)] = result
     save_obj(bank_dict, BANK_PATH)
 
-    
+
 # Function to set a users bet.
 def set_bet(author, message):
     amount = message.content.replace('!bet ', '')
     try:
         amount = int(amount)
     except Exception:
-        client.send_message(message.channel, 'You need to enter an integer, Example: !bet 5')
+        client.send_message(message.channel, 'You need to enter an integer, little shade; Example: !bet 5')
         return
     file_bool = os.path.isfile(BET_PATH)
     if not file_bool:
@@ -169,23 +167,23 @@ def set_bet(author, message):
     data_dict[str(author)] = amount
     save_obj(data_dict, BET_PATH)
 
-    
+
 # Function to look at the currently Set bet.
 def review_bet(author, message):
     bet_dict = build_dict(BET_PATH)
     if bet_dict.get(str(author)):
         client.send_message(message.channel, '%s is currently betting: %s' % (author, bet_dict.get(str(author))))
     else:
-        client.send_message(message.channel, '%s your bet is not Set, use the !bet command.' % (author))
+        client.send_message(message.channel, '%s your bet is not set, use the !bet command.' % (author))
 
-        
+
 # function to loan players money -- ONLY UP TO -- > $50 dollars
 def loan_money(author, message):
     bank_dict = build_dict(BANK_PATH)
     if bank_dict.get(str(author)):
         money = bank_dict.get(str(author))
         if money >= 50:
-            client.send_message(message.channel, '%s you have $%s, you do not need a loan.' % (author, money))
+            client.send_message(message.channel, '%s you have $%s; you do not need a loan, silly little shade.' % (author, money))
             return
         else:
             bank_dict[str(author)] = 50
@@ -209,7 +207,7 @@ def bank_lookup(author, message):
         balance = bank_dict.get(str(author))
         client.send_message(message.channel, 'User: %s, Account-#: %s, Balance: $%s' % (author, account_number, balance))
     if not str(author) in bank_dict.keys():
-        client.send_message(message.channel, "Looks like you don't have an Account, try the !loan command.")
+        client.send_message(message.channel, "Little shade, it looks like you don't have an Account; try the -loan command.")
     save_obj(acc_dict, ACC_PATH)
 
 #Function to lookup the money and create a top 5 users.
@@ -226,13 +224,13 @@ def leader_lookup(author, message):
 # you can get an API key on the web site.
 def get_weather(message):
     zip_code = message.content.replace('-weather', '')
-    link = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s' % (zip_code, API_KEY)
+    link = 'http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=67d017fbc6c91cd019c617d93eb025d2' % (zip_code)
     r = requests.get(link)
     data = json.loads(r.text)
     location = data['name']
     temp = data['main']['temp'] * 1.8 - 459.67
     status = data['weather'][0]['description']
-    payload = 'In %s: Weather is: %s, Temp is: %s' % (location, status, temp)
+    payload = 'In %s: Weather is: %s, Temp is: %s. I hope you have a good day, little shade!' % (location, status, temp)
     client.send_message(message.channel, payload)
 
 
@@ -240,7 +238,7 @@ def get_weather(message):
 def bot_join(message):
     join_url = message.content.strip('-join ')
     client.accept_invite(join_url)
-    client.send_message(message.channel, 'Joining the Server! ^_^')
+    client.send_message(message.channel, 'Joining the Server, little shade! ^_^')
 
 
 # Ask Echo a question.
@@ -252,7 +250,7 @@ def ask_clever_bot(message):
 
 
 # Spanks the user and calls them out on the server, with an '@' message.
--# Format ==> @User has been, INSERT_ITEM_HERE
+# Format ==> @User has been, INSERT_ITEM_HERE
 def spank_user(message, author):
     target_user = message.content.replace('-spank ', '')
     punishment = SPANK_BANK[random.randint(0, len(SPANK_BANK) - 1)]
@@ -278,58 +276,61 @@ def roll_odds(author, message):
 
 # eight ball function to return the magic of the eight ball.
 def eight_ball(message):
-    question = message.content.strip('-8ball' or '-8b')
+    question = message.content.strip('-8ball','-8b')
     prediction = random.randint(0, len(EIGHT_BALL_OPTIONS) - 1)
     client.send_message(message.channel, 'Question: [%s], %s' % (question, EIGHT_BALL_OPTIONS[prediction]))
 
 
-# Dispacther for messages from the users.
+def various_commands(message):
+    input = message.content.split(None,2)
+    action = ("*"+input[1]+"s"+"*"+" ")
+    if input[1].startswith("kiss"):
+        client.send_message(message.channel,"*kisses* "+input[2])
+    if input[1].startswith("marry"):
+        client.send_message(message.channel,"*marries* "+input[2])
+    if input[1].startswith("carry"):
+        client.send_message(message.channel,"*carries* "+input[2])
+    if input[1].startswith("punch"):
+        client.send_message(message.channel,"*punches* "+input[2])
+    if input[1].startswith("defy"):
+        client.send_message(message.channel,"*defies* "+input[2])
+    if input[1].startswith("disqualify"):
+        client.send_message(message.channel,"*disqualifies* "+input[2])
+    if not input[1].startswith("carry","marry","kiss","punch","defy","disqualify"):
+        client.send_message(message.channel,action+input[2])
+
+# Dispatcher for messages from the users.
 @client.event
 def on_message(message):
     author = message.author
     if message.content.startswith('-link'):
-      await client.send_message(message.channel,'https://wwww.discord.me/shade')
+      client.send_message(message.channel,'https://wwww.discord.me/shade')
     if message.content.startswith('-yt'):
         youtube_search(message)
     if message.content.startswith('-roll'):
         roll_odds(author, message)
-    if message.content.startswith('-8ball' or '-8b'):
+    if message.content.startswith('-8ball','-8b'):
         eight_ball(message)
-    if message.content.startswith('-join'):        
+    if message.content.startswith('-join'):
       bot_join(message)
     if message.content.startswith('-weather'):
         get_weather(message)
     if message.content.startswith('<@313036994932375552>'):
         ask_clever_bot(message)
     if message.content.startswith('-say'):
-      inputa = message.content.split(None,1)
-      await client.send_message(message.channel,inputa[1])
+      input = message.content.split(None,1)
+      client.send_message(message.channel,input[1])
     if message.content.startswith('-spank'):
         spank_user(message, author)
     if message.content.startswith('-cmd'):
-      inputo = message.content.split(None,2)
-        action = ("*"+inputo[1]+"s"+"*"+" ")
-        if inputo[1].startswith("kiss"):
-          await client.send_message(message.channel,"*kisses* "+inputo[2])
-        if inputo[1].startswith("marry"):
-          await client.send_message(message.channel,"*marries* "+inputo[2])
-        if inputo[1].startswith("carry"):
-          await client.send_message(message.channel,"*carries* "+inputo[2])
-        if inputo[1].startswith("punch"):
-          await client.send_message(message.channel,"*punches* "+inputo[2])
-        if inputo[1].startswith("defy"):
-          await client.send_message(message.channel,"*defies* "+inputo[2])
-        if inputo[1].startswith("disqualify"):
-          await client.send_message(message.channel,"*disqualifies* "+inputo[2])
-        if not input[1].startswith("carry","marry","kiss","punch","defy"):
-          await client.send_message(message.channel,action+input[2])
-    if message.content.startswith('-coin' or 'cf'):
+        various_commands(message)
+    if message.content.startswith('-coin','cf'):
         coin_toss(message)
     if message.content.startswith('-pick'):
-        decision = message.content.split(None)
-          del decision[0]
-        prediction = random.randint(0,len(decision) - 1)
-        await client.send_message(message.channel,decision[prediction])
+        decision = message.content.split(None)
+        del decision[0]
+        prediction = random.randint(0,len(decision) - 1)
+        client.send_message(message.channel,decision[prediction])
     if message.content.startswith('-help' or '-h' or '-???'):
         client.send_message(message.channel, 'https://github.com/shadowin3/echo')
     if message.content.startswith('-slots'):
@@ -347,16 +348,16 @@ def on_message(message):
     if message.content.startswith('-leaderboard'):
         leader_lookup(author, message)
     if message.content.startswith('/notwork'):
-      await client.send_file(message.channel,"notwork.jpg")
+        client.send_file(message.channel,"notwork.jpg")
     if message.content.startswith('/sadpotato'):
-      await client.send_file(message.channel,"downpotato.jpg")
+        client.send_file(message.channel,"downpotato.jpg")
     if message.content.startswith('/lewd'):
-      await client.send_file(message.channel,"Lewd.png")
+        client.send_file(message.channel,"Lewd.png")
     if message.content.startswith('/cookie'):
-      inpu = message.content.split(None,2)
-      await client.send_message(message.channel,inpu[1] + ", you got a :cookie: from "+message.author.name+"\n\n **Reason:** "+inpu[2]+"\n ***Enjoy this Shadowcookie***")
+        input = message.content.split(None,2)
+        client.send_message(message.channel,input[1] + ", you got a :cookie: from "+message.author.name+"\n\n **Reason:** "+input[2]+"\n ***Enjoy this Shadowcookie***")
 
-      
+
 # Create the local Dirs if needed.
 file_bool = os.path.exists("./bot_files")
 if not file_bool:

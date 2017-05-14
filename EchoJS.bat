@@ -1,0 +1,2 @@
+node echo.js
+PAUSE
