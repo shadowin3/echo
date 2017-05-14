@@ -1,5 +1,5 @@
-# Echo Bot 
-_______________________________________________________
+# Echo Bot
+
 ## Features:
    * Youtube Integration
    * CleverBot Integration
@@ -15,7 +15,6 @@ _______________________________________________________
 | ------------- |:-------------:|
 | !youtube [search_term]| Searches youtube for text that the user passes, then gives back a link to one of the videos. |
 | !cleverbot [question] |  This will reach out to the cleverbot API and return an Answer. |
-| !enchant [target_level][fail_stacks] |  this is a Black Desert command that figures out the enchanting chances for black stone upgrades. |
 | !roll |  This rolls from 0-100, and returns the users name and the roll value. |
 | !coin | Simple coin toss command, gives you a 50/50 chance. |
 | !8ball [question] | This returns the eightball prediction and the question the user asked. |
@@ -33,9 +32,6 @@ _______________________________________________________
 
 ## Updates:
   * Updates happen randomly. If you see issues point them out and I will be happy to help. If you have any suggestions or would like to help in improving the bot, feel free to PM me :D
-
-## ToDo:
-  * Music Functions
 
 ## Help:
   * PM me on discord: shadowin#5739
