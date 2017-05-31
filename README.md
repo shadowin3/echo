@@ -13,6 +13,8 @@
 | ------------- |:-------------:|
 | MODERATION COMMANDS | ---------- |
 | /delete, /clear, /clean, /purge, /prune + [number] | Deletes a specified number of messages. |
+| /kick, /k + [user mention] | Kicks a specific user from the server. |
+| /ban, /b + [user mention] | Bans a specific user from the server. |
 | UTILITY COMMANDS | ---------- |
 | /ping | Replies with "Pong!" Also, tells the response delay to the bot (higher ms = slower runtime). |
 | /link, /server, /empire | Creates a link to my discord server, The Shade Empire. |
