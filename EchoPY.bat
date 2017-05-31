@@ -1,2 +1,0 @@
-python echo.py
-PAUSE
