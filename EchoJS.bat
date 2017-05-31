@@ -1,2 +1,0 @@
-node echo.js
-PAUSE
