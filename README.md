@@ -11,15 +11,15 @@
 ## Commands:
 | Command | Description |
 | ------------- |:-------------:|
-| ---------- | MODERATION COMMANDS | ---------- |
+| MODERATION COMMANDS | ---------- |
 | /delete, /clear, /clean, /purge, /prune + [number] | Deletes a specified number of messages. |
-| ---------- | UTILITY COMMANDS | ---------- |
+| UTILITY COMMANDS | ---------- |
 | /ping | Replies with "Pong!" Also, tells the response delay to the bot (higher ms = slower runtime). |
 | /link, /server, /empire | Creates a link to my discord server, The Shade Empire. |
 | /invite, /botadd | Sends the link for adding Echo to your server. |
 | /help, /commands, /??? | Sends a link to this page with the list of commands. |
 | /about, /abt | Replies with a simple description of Echo. |
-| ---------- | TEXT COMMANDS | ---------- |
+| TEXT COMMANDS | ---------- |
 | /coinflip, /cf, /coin | Simple coin toss command, gives you a 50/50 chance. |
 | /8ball, /8b + [question] | This returns the eightball prediction and the question the user asked. |
 | /choose, /pick | Picks between multiple things. WARNING: Options MUST be separated by use of the bar key. |
