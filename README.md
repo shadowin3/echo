@@ -50,5 +50,5 @@
   * Updates happen randomly. If you see issues point them out and I will be happy to help. If you have any suggestions or would like to help in improving the bot, feel free to PM me :D
 
 ## Help:
-  * PM me on discord: Shadowin#5739
+  * PM me on discord: Shadow#5910
   * Join the discord server: https://www.discord.me/shade
