@@ -46,7 +46,8 @@
 | /lick + [user mention], finger, lips | This will return with a lick gif and tell someone that you are licking them, or tell everyone that you are licking your lips/fingers (if specified). |
 | /bite + [user mention] | This will return with a bite gif and tell someone that you just bit them. |
 | /pat + [user mention] | This will return with a pat gif and tell someone that you patted them on the head. |
-| /insult, /roast + [user mention] | Insults someone. Has 108 possible insults to choose from. |
+| /poke + [user mention] | This will return with a poke gif and tell someone that you poked them. |
+| /insult, /roast + [user mention] | Insults someone. Has 109 possible insults to choose from. |
 | MEMES | Various Memes, Images, and Gifs |
 | /notwork | Returns a funny picture that says, "That's not how that works, you little shit." | 
 | /sadpotato | Returns a cute picture to cheer someone up when they are sad. | 
