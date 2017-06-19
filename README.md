@@ -48,6 +48,8 @@
 | /pat + [user mention] | This will return with a pat gif and tell someone that you patted them on the head. |
 | /poke + [user mention] | This will return with a poke gif and tell someone that you poked them. |
 | /insult, /roast + [user mention] | Insults someone. Has 109 possible insults to choose from. |
+| /marry, /marriage, /wed, /wedding + [user mention] + [user mention] | Marries two people in holy matrimony :3 (Serves no purpose, might add later functionality for this such as a command like "/waifu" that tells you your current wife. |
+| /ship, /relationship + [user mention] + [user mention] | Ships two people together and gives them a ship name. |
 | MEMES | Various Memes, Images, and Gifs |
 | /notwork | Returns a funny picture that says, "That's not how that works, you little shit." | 
 | /sadpotato | Returns a cute picture to cheer someone up when they are sad. | 
